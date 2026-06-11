@@ -59,6 +59,49 @@ Moonlight ──── stream ────► second PC ──► Star Citizen (
 | [Moonlight](https://moonlight-stream.org/) + [Sunshine](https://github.com/LizardByte/Sunshine) | streaming the pad to the second PC |
 | iCUE (or any macro tool emitting F13–F24) | turning mouse buttons into trigger keys |
 
+## Setting up the stream (Moonlight + Sunshine)
+
+The stream is what carries the virtual pad to the second PC: **Sunshine** is the
+host (runs on the second PC, next to the alt account) and **Moonlight** is the
+client (runs on this PC, next to MouseToPad). NVIDIA discontinued GameStream,
+so Sunshine is the host to use regardless of GPU brand — NVIDIA, AMD, and Intel
+all work.
+
+### On the second PC — Sunshine (host)
+
+1. Install it:
+   ```powershell
+   winget install -e --id LizardByte.Sunshine
+   ```
+   or grab the Windows installer from the
+   [Sunshine releases page](https://github.com/LizardByte/Sunshine/releases/latest).
+2. On first run, Sunshine opens its web UI at `https://localhost:47990` —
+   accept the self-signed-certificate warning and create the username/password
+   it asks for.
+3. The defaults are fine: the built-in **Desktop** entry is all you need to
+   control the whole machine.
+
+> **Headless tip:** Sunshine can only capture a screen that exists. If the
+> second PC runs without a monitor, plug in a cheap HDMI dummy plug (or set up
+> a virtual display) or the stream will be black.
+
+### On this PC — Moonlight (client)
+
+1. Install it:
+   ```powershell
+   winget install -e --id MoonlightGameStreamingProject.Moonlight
+   ```
+   or download it from [moonlight-stream.org](https://moonlight-stream.org/).
+2. Open Moonlight — it auto-discovers Sunshine hosts on your network. Click the
+   second PC and Moonlight shows a **4-digit PIN**.
+3. On the second PC, open `https://localhost:47990/pin` and enter that PIN.
+   The two machines are now paired.
+4. In Moonlight, open **Desktop** on the second PC — you're streaming.
+5. **Required for MouseToPad:** in Moonlight go to **Settings → Input** and
+   enable **“Process gamepad input when the app is in the background”** —
+   without it, the virtual pad only reaches the second PC while the Moonlight
+   window has focus.
+
 ## Getting started
 
 1. Install **ViGEmBus** on this PC, and grab `MouseToPadSetup.exe` from
@@ -66,9 +109,9 @@ Moonlight ──── stream ────► second PC ──► Star Citizen (
 2. In **iCUE**, map each Scimitar thumb button you want to a key (F13–F24 recommended).
 3. Right-click the **tray icon → Button mappings…** and map those keys to pad buttons.
 4. In **Star Citizen on the second PC**, bind your actions to those Xbox buttons.
-5. In **Moonlight → Settings → Input**, enable
-   **“Process gamepad input when the app is in the background”** so the pad reaches
-   the second PC even while a local game has focus.
+5. Make sure the stream is set up — see
+   [Setting up the stream](#setting-up-the-stream-moonlight--sunshine) above,
+   especially Moonlight's background-gamepad setting.
 
 > Run MouseToPad as Administrator if trigger keys stop working while an elevated
 > app has focus — a non-elevated hook can't intercept keys destined for elevated windows.
