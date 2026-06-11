@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "MouseToPad": {
+      "commandName": "Project"
+    },
+    "Build installer (Inno Setup)": {
+      "commandName": "Executable",
+      "executablePath": "powershell.exe",
+      "commandLineArgs": "-NoProfile -ExecutionPolicy Bypass -File \"$(ProjectDir)scripts\\build-installer.ps1\"",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

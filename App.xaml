@@ -1,0 +1,7 @@
+<Application x:Class="MouseToPad.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             ShutdownMode="OnExplicitShutdown">
+    <!-- No StartupUri: the app lives in the system tray; windows open on demand. -->
+    <Application.Resources />
+</Application>

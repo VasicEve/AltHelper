@@ -1,0 +1,91 @@
+<Window x:Class="MouseToPad.MappingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MouseToPad — Button mappings"
+        Width="560" Height="600" MinWidth="500" MinHeight="520"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Margin="0,0,0,8" TextWrapping="Wrap"
+                   Text="Trigger keys are swallowed and pressed on the virtual Xbox 360 pad. Double-click a cell to edit an existing mapping." />
+
+        <DataGrid x:Name="MappingGrid" Grid.Row="1" Margin="0,0,0,10"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="True"
+                  CanUserResizeRows="False" CanUserSortColumns="False"
+                  HeadersVisibility="Column" SelectionMode="Single"
+                  SelectionChanged="MappingGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridComboBoxColumn x:Name="KeyColumn" Header="Trigger key" Width="180"
+                                        SelectedValueBinding="{Binding Vk}"
+                                        SelectedValuePath="Vk" DisplayMemberPath="Name" />
+                <DataGridComboBoxColumn x:Name="ButtonColumn" Header="Controller button" Width="*"
+                                        SelectedValueBinding="{Binding Button}"
+                                        SelectedValuePath="Button" DisplayMemberPath="Name" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <GroupBox Grid.Row="2" Header="Add a mapping" Padding="8" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="NewKeyCombo" Width="120" DisplayMemberPath="Name"
+                          VerticalContentAlignment="Center"
+                          SelectionChanged="NewKeyCombo_SelectionChanged" />
+                <Button x:Name="CaptureButton" Content="Capture key…" Margin="6,0,0,0"
+                        Padding="8,0" Click="CaptureButton_Click" />
+                <TextBlock Text="→" VerticalAlignment="Center" Margin="8,0" />
+                <ComboBox x:Name="ButtonCombo" Width="180" DisplayMemberPath="Name"
+                          VerticalContentAlignment="Center" />
+                <Button x:Name="AddButton" Content="Add" Width="60" Margin="10,0,0,0"
+                        Click="AddButton_Click" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Header="Keep player active (anti-AFK)" Padding="8" Margin="0,0,0,10">
+            <StackPanel>
+                <CheckBox x:Name="KeepAwakeEnabledBox"
+                          Content="Send a tiny controller input on a timer so the game doesn't log you out" />
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <TextBlock Text="About every" VerticalAlignment="Center" />
+                    <TextBox x:Name="KeepAwakeIntervalBox" Width="50" Margin="6,0"
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <TextBlock Text="seconds:" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox x:Name="KeepAwakeActionCombo" Width="230" DisplayMemberPath="Name"
+                              VerticalContentAlignment="Center" />
+                    <Button x:Name="TestPulseButton" Content="Test" Width="60" Margin="8,0,0,0"
+                            ToolTip="Send one pulse right now (ignores the conditions below) so you can watch it arrive in the remote session"
+                            Click="TestPulseButton_Click" />
+                </StackPanel>
+                <CheckBox x:Name="KeepAwakeMoonlightOnlyBox" Content="Only while Moonlight is running"
+                          Margin="0,8,0,0" />
+                <CheckBox x:Name="KeepAwakePauseActiveBox" Content="Pause while you're actively using the Moonlight window"
+                          Margin="0,8,0,0" />
+                <TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="Timing, direction, strength, and duration are all randomized so the input looks like a person, not a script. Pulses use the same virtual pad as your hotkeys, so Moonlight streams them to the second PC to keep that Star Citizen session alive. 'Actively using' means Moonlight is focused and you've given input in the last 30 seconds." />
+            </StackPanel>
+        </GroupBox>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="RemoveButton" Grid.Column="0" Content="Remove selected"
+                    Padding="10,4" IsEnabled="False" Click="RemoveButton_Click" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Content="Save" Width="90" Padding="0,4" IsDefault="True"
+                        Click="SaveButton_Click" />
+                <Button Content="Cancel" Width="90" Padding="0,4" Margin="8,0,0,0"
+                        IsCancel="True" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
