@@ -12,7 +12,7 @@
 ; Requires the .NET 8 Desktop Runtime on the target machine.
 
 #define AppName "MouseToPad"
-#define AppVersion "1.7.0"
+#define AppVersion "1.8.0"
 #define AppExe "MouseToPad.exe"
 #define PublishDir "bin\Release\net8.0-windows\win-x64\publish"
 

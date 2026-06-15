@@ -143,6 +143,74 @@ public partial class MappingsWindow : Window
             _rows.Remove(row);
     }
 
+    private void WipeScButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ScProfiles.StarCitizenRunning())
+        {
+            MessageBox.Show(this,
+                "Close Star Citizen first — it rewrites its settings file on exit, which would undo the wipe.",
+                "MouseToPad", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        var maps = FindOrBrowseActionmaps();
+        if (maps.Count == 0) return;
+
+        string fileList = string.Join("\n", maps.Select(m => "  •  " + m));
+        if (MessageBox.Show(this,
+            "This blanks every gamepad binding in your local Star Citizen profile(s) — both saved " +
+            "customizations and the game's stock defaults:\n\n" +
+            fileList + "\n\n" +
+            $"The original file is kept next to it, renamed with a {ScProfiles.BackupSuffix} suffix, " +
+            "so Restore can bring everything back.\n\nContinue?",
+            "MouseToPad", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            return;
+
+        string results = string.Join("\n", maps.Select(ScProfiles.Wipe));
+        MessageBox.Show(this,
+            results + "\n\nYour local Star Citizen will now ignore the virtual pad. " +
+            "If a future game patch adds brand-new gamepad actions, run the wipe again after updating MouseToPad.",
+            "MouseToPad", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void RestoreScButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ScProfiles.StarCitizenRunning())
+        {
+            MessageBox.Show(this,
+                "Close Star Citizen first — restoring while it runs would be overwritten when it exits.",
+                "MouseToPad", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        var maps = FindOrBrowseActionmaps();
+        if (maps.Count == 0) return;
+
+        string results = string.Join("\n", maps.Select(ScProfiles.Restore));
+        MessageBox.Show(this, results, "MouseToPad", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    /// <summary>Auto-detected channel profiles, or a folder picker if the game
+    /// isn't installed in the default location.</summary>
+    private List<string> FindOrBrowseActionmaps()
+    {
+        var maps = ScProfiles.FindActionmaps();
+        if (maps.Count > 0) return maps;
+
+        MessageBox.Show(this,
+            "Couldn't find a Star Citizen install in the default location. " +
+            "Pick your channel folder (e.g. ...\\Roberts Space Industries\\StarCitizen\\LIVE) in the next dialog.",
+            "MouseToPad", MessageBoxButton.OK, MessageBoxImage.Information);
+        var dialog = new Microsoft.Win32.OpenFolderDialog
+        {
+            Title = "Select your Star Citizen channel folder (e.g. LIVE)",
+        };
+        if (dialog.ShowDialog(this) == true)
+            maps.Add(System.IO.Path.Combine(dialog.FolderName,
+                "user", "client", "0", "Profiles", "default", "actionmaps.xml"));
+        return maps;
+    }
+
     /// <summary>Fire one pulse immediately with the action currently selected in
     /// the dropdown (saved or not), bypassing the Moonlight/activity gates —
     /// the user clicked a button, so they are by definition "active".</summary>

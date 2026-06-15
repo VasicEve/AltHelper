@@ -42,6 +42,9 @@ Moonlight ──── stream ────► second PC ──► Star Citizen (
 - **Keep player active (anti-AFK)** — periodic stick nudges or button taps with
   randomized timing, direction, strength, and eased motion so the input stream
   looks human, not scripted — with a **Test** button to fire one on demand
+- **Wipe / Restore local SC gamepad bindings** — one click blanks every gamepad
+  binding saved in your local Star Citizen profile (with an automatic backup and
+  a restore button), so your own game ignores the virtual pad
 - **Persistent settings** — `%APPDATA%\MouseToPad\mappings.json`, human-readable
 - **Installer** — per-user (no admin needed), optional start-with-Windows and desktop shortcut
 
@@ -204,6 +207,25 @@ to the background-gamepad setting from Part 2, it should **still** work.
 It automatically holds off while **you** are actively flying the alt (Moonlight
 focused + recent input), and does nothing if Moonlight isn't running.
 
+### Part 9 — optional: stop your local Star Citizen reacting to the pad
+
+Star Citizen ships with default gamepad bindings, so the copy on YOUR PC would
+also react to the virtual pad while it's focused (B is *eject* by default — you
+want this part). One step, done once:
+
+1. **Close Star Citizen**, then in MouseToPad open **Button mappings…** and
+   click **Wipe gamepad bindings…** (under *Local Star Citizen gamepad
+   bindings*). It backs up `actionmaps.xml` (renamed alongside the original),
+   then writes a copy where **every gamepad binding is bound to nothing** —
+   your saved binds *and* all ~240 stock defaults, whose list is baked in from
+   the game's own SC 4.7 profile. All installed channels (LIVE/PTU/…) are
+   covered.
+
+**Restore backup…** puts the original file back exactly as it was. MouseToPad
+refuses to touch the files while Star Citizen is running (the game rewrites
+them on exit). If a future patch adds brand-new gamepad actions, update
+MouseToPad and run the wipe again.
+
 ---
 
 ## Troubleshooting
@@ -218,6 +240,7 @@ focused + recent input), and does nothing if Moonlight isn't running.
 | Buttons work only while the Moonlight window is focused | Same fix — background gamepad setting (Part 2, step 6) |
 | The Moonlight stream is a black screen | The ALT PC has no display — use an HDMI dummy plug (Part 1) |
 | Trigger keys stop working when an admin program has focus | Right-click MouseToPad → run as Administrator |
+| My own Star Citizen reacts to thumb buttons / camera flicks | Wipe its gamepad bindings (Part 9) |
 | The alt still gets logged out | Make sure **Keep player active** is ticked in the tray menu and Moonlight is running; click **Test** to confirm the pulse arrives |
 
 ## Building from source

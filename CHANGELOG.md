@@ -2,6 +2,16 @@
 
 All notable changes to MouseToPad. Dates are release dates.
 
+## 1.8.0 — 2026-06-11
+- **Wipe / Restore local Star Citizen gamepad bindings**: one button renames
+  `actionmaps.xml` to a backup and writes a copy where every gamepad binding is
+  bound to nothing — saved customizations are blanked AND all ~240 stock
+  defaults are overridden with explicit blank rebinds (action list baked in from
+  the game's SC 4.7 `defaultProfile.xml`). Restore renames the backup back.
+  Auto-detects all installed channels (LIVE/PTU/…) and refuses to run while the
+  game is open. Headless flags `--wipe-sc` / `--restore-sc` do the same from a
+  terminal.
+
 ## 1.7.0 — 2026-06-11
 - **Test button** in the keep-awake settings: fires one pulse immediately with the
   currently selected action, bypassing the Moonlight/activity gates.

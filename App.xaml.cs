@@ -36,6 +36,27 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // headless maintenance switches (run before the single-instance check so
+        // they work while the tray app is up); results land in %TEMP%
+        if (e.Args.Length > 0 && e.Args[0] is "--wipe-sc" or "--restore-sc")
+        {
+            List<string> results;
+            var maps = ScProfiles.FindActionmaps();
+            if (ScProfiles.StarCitizenRunning())
+                results = new List<string> { "Star Citizen is running — close it first." };
+            else if (maps.Count == 0)
+                results = new List<string> { "no Star Citizen install found" };
+            else
+            {
+                Func<string, string> op = e.Args[0] == "--wipe-sc" ? ScProfiles.Wipe : ScProfiles.Restore;
+                results = maps.Select(op).ToList();
+            }
+            System.IO.File.WriteAllLines(
+                System.IO.Path.Combine(System.IO.Path.GetTempPath(), "MouseToPad-sc-wipe.log"), results);
+            Shutdown(maps.Count == 0 ? 1 : 0);
+            return;
+        }
+
         _mutex = new Mutex(initiallyOwned: true, "MouseToPad_SingleInstance", out bool createdNew);
         if (!createdNew)
         {
