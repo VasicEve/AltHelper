@@ -27,8 +27,10 @@ virtual Xbox 360 pad (ViGEmBus)
 Moonlight ──── stream ────► second PC ──► Star Citizen (alt account)
 ```
 
-- Your **own** machine never reacts to the pad — your local game simply has no
-  gamepad bindings, so the virtual controller exists purely to be streamed.
+- The virtual controller exists purely to be streamed. Star Citizen ships with
+  default gamepad bindings, so the copy on YOUR PC *would* react to the pad while
+  focused — [Part 9](#part-9--optional-stop-your-local-star-citizen-reacting-to-the-pad)
+  wipes those so it doesn't.
 - F13–F24 are ideal trigger keys: no physical keyboard has them, so nothing
   else on your system will ever react to them. Any macro software that can
   send them works, not just iCUE.
@@ -185,11 +187,14 @@ active.
 
 1. On **YOUR PC**, open the Moonlight stream of the ALT PC and start
    Star Citizen on it (your alt account).
-2. In the streamed Star Citizen: **Options → Keybindings**, choose the action
-   you want, select the **gamepad** column, and when it says "press a key",
-   press the **thumb button on your mouse**. Because the Moonlight window is
-   focused, the virtual pad press travels down the stream and SC binds it.
-3. Repeat for each action/button.
+2. In the streamed Star Citizen, go to **Options → Keybindings**. This screen is
+   just a read-only diagram — click **ADVANCED CONTROLS CUSTOMIZATION** at the
+   bottom to actually edit bindings.
+3. Find the action you want, click its cell in the **gamepad** column, and when
+   it says "press a key", press the **thumb button on your mouse**. Because the
+   Moonlight window is focused, the virtual pad press travels down the stream and
+   SC binds it.
+4. Repeat for each action/button.
 
 **✅ Check:** with the Moonlight window focused, pressing a thumb button makes
 the alt do the thing. Then click back into your own game and try again — thanks
@@ -225,6 +230,9 @@ want this part). One step, done once:
 refuses to touch the files while Star Citizen is running (the game rewrites
 them on exit). If a future patch adds brand-new gamepad actions, update
 MouseToPad and run the wipe again.
+
+> Power users: `MouseToPad.exe --wipe-sc` and `--restore-sc` do the same from a
+> terminal (results written to `%TEMP%\MouseToPad-sc-wipe.log`).
 
 ---
 
